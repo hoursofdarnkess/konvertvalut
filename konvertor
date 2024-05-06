@@ -1,0 +1,118 @@
+using System;
+
+namespace Конвертер_валют_крут_фрут
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            double rateUSDtoRUB = 73.46;
+            double rateRUBtoUSD = 0.014;
+
+            double rateEURtoRUB = 87.36;
+            double rateRUBtoEUR = 0.011;
+
+            double rateEURtoUSD = 1.13;
+            double rateUSDtoEUR = 0.88;
+
+            string cycleCondition = "";
+
+            Console.WriteLine("Конвертер валют\n");
+            Console.Write("Введите количество у Вас рублей: ");
+            double rubN = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Введите количество у Вас долларов: ");
+            double usdN = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Введите количество у Вас евро: ");
+            double eurN = Convert.ToDouble(Console.ReadLine());
+
+            while (cycleCondition != "exit")
+            {
+                Console.Clear();
+
+                Console.WriteLine("Текущий курс валют:\n");
+                Console.WriteLine($"Продать USD: {rateUSDtoRUB} RUB, " +
+                    $"Купить USD: {rateRUBtoUSD} RUB\n" +
+                    $"Продать EUR: {rateEURtoRUB} RUB\n" +
+                    $"Купить EUR: {rateRUBtoEUR} RUB\n ");
+
+                Console.WriteLine($"Обменять EUR/USD: {rateEURtoUSD}\n ");
+                Console.WriteLine($"У вас {rubN} рублей, {usdN} долларов, {eurN} евро\n");
+
+                Console.Write("Какую валюту хотите поменять?\n" +
+                    "1-рубли, 2-доллары, 3-евро: ");
+                int changeFrom = Convert.ToInt32(Console.ReadLine());
+
+                double compareSum = 0;
+                if (changeFrom == 1)
+                    compareSum = rubN;
+                else if (changeFrom == 2)
+                    compareSum = usdN;
+                else if (changeFrom == 3)
+                    compareSum = eurN;
+                else
+                    continue;
+
+                Console.Write("Введите сумму обмена: ");
+                double changeSum = Convert.ToDouble(Console.ReadLine());
+
+                if (changeSum > compareSum || changeSum == 0)
+                    continue;
+
+                Console.Write("Какую валюту хотите получить?\n" +
+                    "1-рубли, 2-доллары, 3-евро: ");
+                int changeTo = Convert.ToInt32(Console.ReadLine());
+
+                if (changeTo == 1)
+                {
+                    if (changeFrom == 2)
+                    {
+                        rubN += changeSum * rateUSDtoRUB;
+                        usdN -= changeSum;
+                    }
+                    else if (changeFrom == 3)
+                    {
+                        rubN += changeSum * rateEURtoRUB;
+                        eurN -= changeSum;
+                    }
+                }
+                else if (changeTo == 2)
+                {
+                    if (changeFrom == 1)
+                    {
+                        usdN += changeSum * rateRUBtoUSD;
+                        rubN -= changeSum;
+                    }
+                    else if (changeFrom == 3)
+                    {
+                        usdN += changeSum * rateEURtoUSD;
+                        eurN -= changeSum;
+                    }
+                }
+                else if (changeTo == 3)
+                {
+                    if (changeFrom == 1)
+                    {
+                        eurN += changeSum * rateRUBtoEUR;
+                        rubN -= changeSum;
+                    }
+                    else if (changeFrom == 2)
+                    {
+                        eurN += changeSum * rateUSDtoEUR;
+                        usdN -= changeSum;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+
+                Console.WriteLine($"Обмен произведен\n" +
+                    $"У Вас {rubN} рублей, {usdN} долларов, {eurN} евро\n");
+
+                Console.WriteLine("Для продолжения нажмите Enter.\n" +
+                    "Для выхода из программы введите exit и нажмите Enter");
+                cycleCondition = Console.ReadLine();
+            }
+        }
+    }
+}
